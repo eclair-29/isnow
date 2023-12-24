@@ -1,0 +1,7 @@
+* {
+  border-radius: 0 !important;
+}
+
+input {
+  box-shadow: none !important;
+}
