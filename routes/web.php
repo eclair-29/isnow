@@ -12,5 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('requestor.index');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// Requestor routes
+Route::group(['middleware' => ['role:Requestor|Approver|Admin']], function () {
+    Route::get('/requests', 'RequestorController@index')->name('requests.index');
+});
+
+// Approver routes
+Route::group(['middleware' => ['role:Approver']], function () {
+    Route::get('/approvals', 'ApproverController@index')->name('approvals.index');
 });
