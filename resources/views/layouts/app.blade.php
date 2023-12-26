@@ -11,7 +11,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/datatables.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,6 +24,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatables.css') }}" rel="stylesheet">
     <link href="{{ asset('css/override.css') }}" rel="stylesheet">
 </head>
 
@@ -29,7 +33,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" {{-- href="{{ url('/') }}" --}}>
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'isnow') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -52,23 +56,23 @@
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link" href="{{ route('faq') }}">{{ __('FAQ') }}</a>
                         </li>
                         @endif
                         @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('requests.index') }}">{{ __('Request') }}</a>
-                        </li>
-                        @role('Approver')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('approvals.index') }}">{{ __('Approvals') }}</a>
-                        </li>
-                        @endrole
-                        @role('Admin')
+                        @role('admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Admin') }}</a>
                         </li>
                         @endrole
+                        @role('approver')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('approvals.index') }}">{{ __('Approvals') }}</a>
+                        </li>
+                        @endrole
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('requests.index') }}">{{ __('Request') }}</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

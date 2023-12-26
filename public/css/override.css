@@ -2,6 +2,33 @@
   border-radius: 0 !important;
 }
 
-input {
+input, select, textarea {
   box-shadow: none !important;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+table {
+  box-shadow: none !important;
+}
+
+.table > :not(:first-child) {
+  border-top: 0 !important;
+}
+
+table thead th {
+  font-weight: 400 !important;
+}
+
+
+.form-check-input ~ .custom-control-label::before {
+  border-radius: 0 !important;
+}
+
+.required {
+  color: red;
 }

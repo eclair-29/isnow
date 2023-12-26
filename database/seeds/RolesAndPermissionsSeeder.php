@@ -14,7 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run()
     {
         // Create roles 
-        $roles = ['Requestor', 'Approver', 'Admin'];
+        $roles = ['requestor', 'approver', 'admin'];
 
         foreach ($roles as $role) {
             Role::create(['name' => $role]);
@@ -40,7 +40,7 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Assign permissions to roles
-        Role::findByName('Admin')->givePermissionTo([
+        Role::findByName('admin')->givePermissionTo([
             'View All Requests',
             'View Own Requests For Approval',
             'View Own Approved Requests',
@@ -52,7 +52,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'Update user details',
         ]);
 
-        Role::findByName('Approver')->givePermissionTo([
+        Role::findByName('approver')->givePermissionTo([
             'View All Requests',
             'View Own Requests For Approval',
             'View Own Approved Requests',
@@ -62,7 +62,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'Reject Requests',
         ]);
 
-        Role::findByName('Requestor')->givePermissionTo([
+        Role::findByName('requestor')->givePermissionTo([
             'View All Requests',
             'View Own Requests For Approval',
             'View Own Approved Requests',

@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = User::find(auth()->user()->id);
-        $user->assignRole('Admin');
+        // $user = User::find(auth()->user()->id);
+        // $user->assignRole('approver');
         return view('home');
     }
 }

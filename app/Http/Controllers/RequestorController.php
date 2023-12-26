@@ -2,10 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApplicationType;
+use App\Models\RequestType;
+use App\User;
 use Illuminate\Http\Request;
 
 class RequestorController extends Controller
 {
+    public function getApplicationTypes()
+    {
+        $applicationTypes = ApplicationType::all();
+        return $applicationTypes;
+    }
+
+    public function getRequestTypes(Request $request)
+    {
+        $requestTypes = RequestType::where('application_type_id', $request->application_type_id)->get();
+        return $requestTypes;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +38,12 @@ class RequestorController extends Controller
      */
     public function create()
     {
-        //
+        $applicationTypes = $this->getApplicationTypes();
+        $user = User::find(auth()->user()->id);
+        return view('requestor.create', [
+            'applicationTypes' => $applicationTypes,
+            'user' => $user
+        ]);
     }
 
     /**

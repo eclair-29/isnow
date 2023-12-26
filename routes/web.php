@@ -19,12 +19,21 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// Faq
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+
 // Requestor routes
-Route::group(['middleware' => ['role:Requestor|Approver|Admin']], function () {
+Route::group(['middleware' => ['role:requestor|approver|admin']], function () {
     Route::get('/requests', 'RequestorController@index')->name('requests.index');
+    Route::get('/requests/create', 'RequestorController@create')->name('requests.create');
+    Route::post('/requests', 'RequestorController@store')->name('requests.store');
+    Route::get('/requests/getapplicationtypes', 'RequestorController@getApplicationTypes')->name('requests.getapplicationtypes');
+    Route::get('/requests/getrequesttypes', 'RequestorController@getRequestTypes')->name('requests.getrequesttypes');
 });
 
 // Approver routes
-Route::group(['middleware' => ['role:Approver']], function () {
+Route::group(['middleware' => ['role:approver']], function () {
     Route::get('/approvals', 'ApproverController@index')->name('approvals.index');
 });
