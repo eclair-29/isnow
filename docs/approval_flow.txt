@@ -1,0 +1,5 @@
+approval flow (HRIS)
+1. request will be recvd by the immediate supervisor (dropdown)
+2. once step 1 is approved, request will be routed to the next approver, which is division head (dropdown)
+3. once step 2 is approved, request will be routed to the next and final approver, which is the DPO manager
+4. then the request status should be updated from pending to approved
