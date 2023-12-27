@@ -2,8 +2,11 @@
   border-radius: 0 !important;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   box-shadow: none !important;
+  outline: none !important;
 }
 
 select {
@@ -14,19 +17,41 @@ select {
 
 table {
   box-shadow: none !important;
+  border: none !important;
 }
 
-.table > :not(:first-child) {
-  border-top: 0 !important;
-}
-
-table thead th {
+table thead th,
+table tbody td {
   font-weight: 400 !important;
+  border-bottom: none !important;
+  border-right: none !important;
 }
 
+table tbody tr:last-child td {
+  border-bottom: 1px solid #dee2e6 !important;
+}
 
-.form-check-input ~ .custom-control-label::before {
-  border-radius: 0 !important;
+table thead th:last-child,
+table tbody td:last-child {
+  border-right: 1px solid #dee2e6 !important;
+}
+
+#requestsdatatable,
+.paginate_button,
+.dataTables_info,
+#requestsdatatable_filter,
+.dataTables_length {
+  font-size: 12px !important;
+}
+
+#requestsdatatable_filter label,
+.dataTables_length label {
+  margin-bottom: 10px !important;
+}
+
+.dataTables_paginate,
+.dataTables_info {
+  margin-top: 10px;
 }
 
 .required {
