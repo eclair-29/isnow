@@ -27,8 +27,21 @@
                 <th scope="col">Approver</th>
                 <th scope="col">Application Type</th>
                 <th scope="col">Status</th>
+                <th scope="col">Updated Date</th>
               </tr>
             </thead>
+            <tbody>
+              @foreach($requests as $request)
+              <tr>
+                <td>{{ $request->ticket_id }}</td>
+                <td>{{ $request->user->name }}</td>
+                <td>{{ $request->approver->name }}</td>
+                <td>{{ $request->applicationType->description }}</td>
+                <td>{{ $request->status->description }}</td>
+                <td>{{ $request->updated_at }}</td>
+              </tr>
+              @endforeach
+            </tbody>
           </table>
         </div>
       </div>
