@@ -15,7 +15,12 @@ class DivisionsSeeder extends Seeder
     {
         $date = Carbon::now();
         DB::table('divisions')->insert([
-            ['description' => 'ISD', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Production Control Center', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Payroll', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Technical Support', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Human Resources', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Sustainable Quality Center', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Info Tech and Security', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
         ]);
     }
 }

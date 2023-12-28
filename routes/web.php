@@ -27,6 +27,7 @@ Route::group(['middleware' => ['role:requestor|approver|admin']], function () {
     Route::post('/requests', 'RequestorController@store')->name('requests.store');
     Route::get('/requests/getapplicationtypes', 'RequestorController@getApplicationTypes')->name('requests.getapplicationtypes');
     Route::get('/requests/getrequesttypes', 'RequestorController@getRequestTypes')->name('requests.getrequesttypes');
+    Route::get('/requests/generateticketid', 'RequestorController@generateTicketId')->name('requests.generateticketid');
 });
 
 // Approver routes

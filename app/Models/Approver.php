@@ -15,4 +15,9 @@ class Approver extends Model
     {
         return $this->hasMany(Request::class);
     }
+
+    public function approverType()
+    {
+        return $this->belongsTo(ApproverType::class);
+    }
 }

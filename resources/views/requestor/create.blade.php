@@ -50,8 +50,8 @@
 
             <!-- Application Type dropdown -->
             <div class="form-group">
-              <label for="applicationtypes">Select Application Type<span class="required">*</span></label>
-              <select name="applicationtypes" id="applicationtypes" class="form-control">
+              <label for="applicationtype">Select Application Type<span class="required">*</span></label>
+              <select name="applicationtype" id="applicationtype" class="form-control">
                 <option selected disabled>Select Application Type</option>
                 @foreach ($applicationTypes as $applicationType)
                 <option value="{{ $applicationType->id }}">{{ $applicationType->description }}</option>
@@ -69,8 +69,8 @@
 
               <!-- Requet Type dropdown -->
               <div class="col form-group" hidden>
-                <label for="requesttypes">Request Type<span class="required">*</span></label>
-                <select name="requesttypes" id="requesttypes" class="form-control"></select>
+                <label for="requesttype">Request Type<span class="required">*</span></label>
+                <select name="requesttype" id="requesttype" class="form-control"></select>
               </div>
             </div>
 
@@ -91,26 +91,35 @@
   </div>
 </div>
 <script>
-  $(document).on('change', '#applicationtypes', function () {
-    const value = $(this).val();
-    const requesttypes = $('#requesttypes');
+  $(document).on('change', '#applicationtype', function () {
+    const applicationtypeid = $(this).val();
+    const requesttype = $('#requesttype');
     const ticketid = $('#ticketid');
     const purpose = $('#purpose');
+
+    // Generate ticket id based on selected application type
+    $.ajax({
+      type: 'get',
+      url: '{{ route('requests.generateticketid') }}?application_type_id=' + applicationtypeid,
+      success: function (response) {
+        ticketid.val(response);
+      }
+    })
     
     // Get request types options depending on selected application type
     $.ajax({
       type: 'get',
-      url: '{{ route('requests.getrequesttypes') }}?application_type_id=' + value,
+      url: '{{ route('requests.getrequesttypes') }}?application_type_id=' + applicationtypeid,
       success: function (response) {
         // Show ticket id and request types fields
         ticketid.parent().attr("hidden", false);
-        requesttypes.parent().attr("hidden", false);
+        requesttype.parent().attr("hidden", false);
         purpose.parent().attr("hidden", false);
 
-        requesttypes.html('<option selected disabled>Select Request Type</option>');
+        requesttype.html('<option selected disabled>Select Request Type</option>');
 
         $.each(response, function (key, value) {
-          requesttypes
+          requesttype
             .append('<option value="' + value.id + '">' + value.description + '</option>');
         })
       }

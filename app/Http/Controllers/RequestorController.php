@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApplicationType;
+use App\Models\Request as ModelsRequest;
 use App\Models\RequestType;
 use App\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,27 @@ class RequestorController extends Controller
         return $requestTypes;
     }
 
+    public function generateTicketId(Request $request)
+    {
+        $applicationTypeId = $request->application_type_id;
+        # Application type ids
+        $hrisAppId = 1;
+        $accountAppId = 2;
+        $joAppId = 3;
+        # Current year
+        $year = date('y');
+        # Get request count based on application type
+        $requestCount = ModelsRequest::where('application_type_id', $applicationTypeId)->count();
+        $ticketType = '';
+        $zeroFilledId = str_pad($requestCount + 1, $requestCount > 9 ? 5 : 4, '0', STR_PAD_LEFT);
+
+        if ($applicationTypeId == $hrisAppId) $ticketType = 'HRIS';
+        if ($applicationTypeId == $accountAppId) $ticketType = 'ACCT';
+        if ($applicationTypeId == $joAppId) $ticketType = 'JO';
+
+        return $ticketType . $year . $zeroFilledId;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +50,9 @@ class RequestorController extends Controller
      */
     public function index()
     {
-        return view('requestor.index');
+        $user = User::find(auth()->user()->id); # auth user
+        $requests = $user->requests;
+        return view('requestor.index', ['requests' => $requests]);
     }
 
     /**

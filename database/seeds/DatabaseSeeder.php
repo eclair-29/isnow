@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             DivisionsSeeder::class,
             ApplicationTypesSeeder::class,
             RequestTypesSeeder::class,
+            ApproverTypesSeeder::class,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Division;
+use App\Models\Request;
 use App\Models\Site;
 use App\Models\Status;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
