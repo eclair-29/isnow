@@ -87,7 +87,9 @@ class RequestorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $validated = $request->validated();
+        // ModelsRequest::create($validated);
+        // return redirect('/requests')->with('status', 'Request created!');
     }
 
     /**
