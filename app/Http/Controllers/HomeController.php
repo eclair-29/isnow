@@ -26,6 +26,16 @@ class HomeController extends Controller
     {
         // $user = User::find(auth()->user()->id);
         // $user->assignRole('approver');
+
+        // $approver = Approver::create([
+        //     'name' => 'Stephen Tan',
+        //     'user_id' => 5,
+        //     'approver_type_id' => 3,
+
+        // ]);
+
+        // $approver->save();
+        
         return view('home');
     }
 }
