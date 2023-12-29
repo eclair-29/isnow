@@ -43,6 +43,15 @@ class RequestorController extends Controller
         return $ticketType . $year . $zeroFilledId;
     }
 
+    public function getSupervisorApprovers()
+    {
+        $supervisorApprovers = Approver::whereHas('user', function ($query) {
+            $query->where('division_id', auth()->user()->division_id);
+        })->where('approver_type_id', 3)->get();
+
+        return $supervisorApprovers;
+    }
+
     /**
      * Display a listing of the resource.
      *
