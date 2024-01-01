@@ -40,4 +40,24 @@ class Status extends Model
     {
         return $this->hasMany(RequestType::class);
     }
+
+    public function depts()
+    {
+        return $this->hasMany(Dept::class);
+    }
+
+    public function requestTrackings()
+    {
+        return $this->hasMany(RequestTracking::class);
+    }
+
+    public function accountApplications()
+    {
+        return $this->hasMany(AccountApplication::class);
+    }
+
+    public function accountTypes()
+    {
+        return $this->hasMany(AccountType::class);
+    }
 }

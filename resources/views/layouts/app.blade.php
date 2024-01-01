@@ -12,19 +12,20 @@
 
     <!-- Scripts -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/datatables.js') }}"></script>
+    <script>
+        const baseUrl = '{{ url('') }}';
+    </script>
+    <script src="{{ asset('js/libs/jquery.js') }}"></script>
+    <script src="{{ asset('js/libs/bootstrap.js') }}" defer></script>
+    <script src="{{ asset('js/libs/datatables.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/libs/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/libs/datatables.css') }}" rel="stylesheet">
     <link href="{{ asset('css/override.css') }}" rel="stylesheet">
 </head>
 

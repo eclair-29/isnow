@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ApplicationTypesSeeder::class,
             RequestTypesSeeder::class,
             ApproverTypesSeeder::class,
+            DeptsSeeder::class,
+            AccountTypesSeeder::class,
         ]);
     }
 }

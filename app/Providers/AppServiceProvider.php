@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::component('reusables.sidelinks', 'sidelinks');
+        // Blade::component('reusables.approvers', 'approvers');
     }
 }

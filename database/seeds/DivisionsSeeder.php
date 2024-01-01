@@ -21,6 +21,7 @@ class DivisionsSeeder extends Seeder
             ['description' => 'Human Resources', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
             ['description' => 'Sustainable Quality Center', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
             ['description' => 'Info Tech and Security', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['description' => 'Is Dept. Head', 'status_id' => 10, 'created_at' => $date, 'updated_at' => $date],
         ]);
     }
 }

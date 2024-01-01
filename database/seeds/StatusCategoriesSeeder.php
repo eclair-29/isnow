@@ -20,6 +20,8 @@ class StatusCategoriesSeeder extends Seeder
             ['category_code' => 'division_status', 'description' => 'division status', 'created_at' => $date, 'updated_at' => $date],
             ['category_code' => 'application__type_status', 'description' => 'application type status',],
             ['category_code' => 'request_type_status', 'description' => 'request type status', 'created_at' => $date, 'updated_at' => $date],
+            ['category_code' => 'dept_status', 'description' => 'dept. status', 'created_at' => $date, 'updated_at' => $date],
+            ['category_code' => 'account_type_status', 'description' => 'account type status', 'created_at' => $date, 'updated_at' => $date],
         ];
 
         foreach ($categories as $category) {

@@ -15,9 +15,10 @@ class ApproverTypesSeeder extends Seeder
     {
         $date = Carbon::now();
         $types = [
+            ['type' => 'depthead', 'description' => 'Dept. Head', 'created_at' => $date, 'updated_at' => $date],
             ['type' => 'divhead', 'description' => 'Division Head', 'created_at' => $date, 'updated_at' => $date],
-            ['type' => 'depthead', 'description' => 'department Head', 'created_at' => $date, 'updated_at' => $date],
             ['type' => 'supervisor', 'description' => 'Supervisor', 'created_at' => $date, 'updated_at' => $date],
+            // ['type' => 'dpo', 'description' => 'Data Privacy Officer', 'created_at' => $date, 'updated_at' => $date],
         ];
 
         foreach ($types as $type) {

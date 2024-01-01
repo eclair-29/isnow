@@ -25,6 +25,8 @@ class CreateRequestsTable extends Migration
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->unsignedBigInteger('application_type_id');
             $table->foreign('application_type_id')->references('id')->on('application_types');
+            $table->unsignedBigInteger('request_type_id');
+            $table->foreign('request_type_id')->references('id')->on('request_types');
             $table->timestamps();
         });
     }

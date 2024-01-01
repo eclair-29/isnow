@@ -11,6 +11,8 @@
 |
 */
 
+use App\Mail\TicketRequestMail;
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -20,14 +22,20 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
+// Mails
+Route::get('/email/request', function () {
+    return new TicketRequestMail();
+});
+
 // Requestor routes
 Route::group(['middleware' => ['role:requestor|approver|admin']], function () {
     Route::get('/requests', 'RequestorController@index')->name('requests.index');
     Route::get('/requests/create', 'RequestorController@create')->name('requests.create');
     Route::post('/requests', 'RequestorController@store')->name('requests.store');
-    Route::get('/requests/getapplicationtypes', 'RequestorController@getApplicationTypes')->name('requests.getapplicationtypes');
     Route::get('/requests/getrequesttypes', 'RequestorController@getRequestTypes')->name('requests.getrequesttypes');
     Route::get('/requests/generateticketid', 'RequestorController@generateTicketId')->name('requests.generateticketid');
+    Route::get('/requests/getapprovalsdetails', 'RequestorController@getApprovalsDetails')->name('requests.getapprovalsdetails');
+    Route::get('/requests/{id}', 'RequestorController@show')->name('requests.show');
 });
 
 // Approver routes

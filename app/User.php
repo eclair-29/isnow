@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Dept;
 use App\Models\Division;
 use App\Models\Request;
 use App\Models\Site;
@@ -21,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'staff_id', 'password', 'status_id', 'site_id', 'division_id',
+        'name', 'staff_id', 'password', 'status_id', 'site_id', 'division_id', 'dept_id',
     ];
 
     /**
@@ -65,5 +66,15 @@ class User extends Authenticatable
     public function requests()
     {
         return $this->hasMany(Request::class);
+    }
+
+    public function dept()
+    {
+        return $this->belongsTo(Dept::class);
+    }
+
+    public function requestTrackings()
+    {
+        return $this->hasMany(RequestTracking::class);
     }
 }

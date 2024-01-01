@@ -2,128 +2,86 @@
 
 @section('content')
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">Create Request</div>
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header">Create Request</div>
 
-        <div class="card-body">
-          @if (session('status'))
-          <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-          </div>
-          @endif
-          <form method="POST" action="{{ route('requests.store') }}">
-            @csrf
+				<div class="card-body">
+					@if (session('status'))
+					<div class="alert alert-success" role="alert">
+						{{ session('status') }}
+					</div>
+					@endif
+					<form method="post" action="{{ route('requests.store') }}">
+						@csrf
 
-            <!-- User details -->
-            <div class="form-row">
-              <div class="col form-group">
-                <label for="staffid">Requestor ID</label>
-                <input readonly name="staffid" id="staffid" class="form-control" value="{{ $user->staff_id }}" />
-              </div>
+						<!-- User details -->
+						@include('requestor.fields.user')
 
-              <div class="col form-group">
-                <label for="requestor">Requestor</label>
-                <input readonly name="requestor" id="requestor" class="form-control" value="{{ $user->name }}" />
-              </div>
-            </div>
+						<!-- Application Type dropdown -->
+						<div class="form-group">
+							<label for="application_type">Application Type<span class="required">*</span></label>
+							<select name="application_type" id="application_type" class="form-control">
+								<option selected disabled>Select Application Type</option>
+								@foreach ($applicationTypes as $applicationType)
+								<option value="{{ $applicationType->id }}" {{
+									old('application_type')==$applicationType->id ?
+									'selected' : '' }}>{{ $applicationType->description }}</option>
+								@endforeach
+							</select>
+							@error('application_type')
+							<small class="form-text text-danger">{{ $message }}</small>
+							@enderror
+						</div>
 
-            <div class="form-row">
-              <div class="col form-group">
-                <label for="site">Site</label>
-                <input readonly name="site" id="site" class="form-control" value="{{ $user->site->site_code }}" />
-              </div>
+						<div class="form-row">
+							<!-- Ticket ID -->
+							<div class="col form-group">
+								<label for="ticket_id">Ticket No.</label>
+								<input readonly name="ticket_id" id="ticket_id" class="form-control"
+									placeholder="Ticket No." value="{{ old('ticket_id') }}" />
+								<small id="ticketinputinfo" class="form-text text-muted">auto generated based on
+									selected
+									application type</small>
+							</div>
 
-              <div class="col form-group">
-                <label for="division">Division</label>
-                <input readonly name="division" id="division" class="form-control"
-                  value="{{ $user->division->description }}" />
-              </div>
+							<!-- Request Type dropdown -->
+							<div class="col form-group">
+								<label for="request_type">Request Type<span class="required">*</span></label>
+								<select name="request_type" id="request_type" class="form-control"></select>
+								<small id="reqtypeselectinfo" class="form-text text-muted">request types will depend on
+									selected application type</small>
+								@error('request_type')
+								<small class="form-text text-danger">{{ $message }}</small>
+								@enderror
+							</div>
+						</div>
 
-              <div class="col form-group">
-                <label for="status">Employment Status</label>
-                <input readonly name="status" id="status" class="form-control"
-                  value="{{ $user->status->description }}" />
-              </div>
-            </div>
+						<!-- Fields depending on the selected application type -->
+						<!-- Hris fields -->
+						@include('requestor.fields.hris')
 
-            <!-- Application Type dropdown -->
-            <div class="form-group">
-              <label for="applicationtype">Select Application Type<span class="required">*</span></label>
-              <select name="applicationtype" id="applicationtype" class="form-control">
-                <option selected disabled>Select Application Type</option>
-                @foreach ($applicationTypes as $applicationType)
-                <option value="{{ $applicationType->id }}">{{ $applicationType->description }}</option>
-                @endforeach
-              </select>
-            </div>
+						<!-- Account fields -->
+						@include('requestor.fields.account')
 
-            <div class="form-row">
-              <!-- Ticket ID -->
-              <div class="col form-group" hidden>
-                <label for="ticketid">Ticket ID</label>
-                <input readonly name="ticketid" id="ticketid" class="form-control" placeholder="Ticket ID" />
-                <small id="ticketinputinfo" class="form-text text-muted">ticket id is auto generated</small>
-              </div>
+						<!-- Purpose field -->
+						<div class="form-group">
+							<label for="purpose">Purpose<span class="required">*</span></label>
+							<textarea class="form-control" name="purpose" id="purpose"
+								rows="5">{{ old('purpose') }}</textarea>
+							@error('purpose')
+							<small class="form-text text-danger">{{ $message }}</small>
+							@enderror
+						</div>
 
-              <!-- Requet Type dropdown -->
-              <div class="col form-group" hidden>
-                <label for="requesttype">Request Type<span class="required">*</span></label>
-                <select name="requesttype" id="requesttype" class="form-control"></select>
-              </div>
-            </div>
-
-            <!-- Fields depending on the selected application type -->
-            <!-- HRIS fields -->
-
-            <!-- Purpose field -->
-            <div class="form-group" hidden>
-              <label for="purpose">Purpose<span class="required">*</span></label>
-              <textarea class="form-control" name="purpose" id="purpose" rows="3"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-outline-primary mt-2">Post Request</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+						<button type="submit" class="btn btn-outline-primary mt-2">Post Request</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<script>
-  $(document).on('change', '#applicationtype', function () {
-    const applicationtypeid = $(this).val();
-    const requesttype = $('#requesttype');
-    const ticketid = $('#ticketid');
-    const purpose = $('#purpose');
-
-    // Generate ticket id based on selected application type
-    $.ajax({
-      type: 'get',
-      url: '{{ route('requests.generateticketid') }}?application_type_id=' + applicationtypeid,
-      success: function (response) {
-        ticketid.val(response);
-      }
-    })
-    
-    // Get request types options depending on selected application type
-    $.ajax({
-      type: 'get',
-      url: '{{ route('requests.getrequesttypes') }}?application_type_id=' + applicationtypeid,
-      success: function (response) {
-        // Show ticket id and request types fields
-        ticketid.parent().attr("hidden", false);
-        requesttype.parent().attr("hidden", false);
-        purpose.parent().attr("hidden", false);
-
-        requesttype.html('<option selected disabled>Select Request Type</option>');
-
-        $.each(response, function (key, value) {
-          requesttype
-            .append('<option value="' + value.id + '">' + value.description + '</option>');
-        })
-      }
-    })
-})
-</script>
+<script src="{{ asset('js/getfieldsbyapptype.js') }}"></script>
+<script src="{{ asset('js/approvals.js') }}"></script>
 @endsection

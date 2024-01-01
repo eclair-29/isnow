@@ -9,6 +9,14 @@ textarea {
   outline: none !important;
 }
 
+h6 {
+  font-weight: 600;
+}
+
+span {
+  font-size: 12px;
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -36,6 +44,7 @@ table tbody td:last-child {
   border-right: 1px solid #dee2e6 !important;
 }
 
+table,
 #requestsdatatable,
 .paginate_button,
 .dataTables_info,
@@ -56,4 +65,8 @@ table tbody td:last-child {
 
 .required {
   color: red;
+}
+
+.sub-text {
+  font-size: 10px !important;
 }

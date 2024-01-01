@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->foreign('site_id')->references('id')->on('sites');
             $table->unsignedBigInteger('division_id');
             $table->foreign('division_id')->references('id')->on('divisions');
+            $table->unsignedBigInteger('dept_id');
+            $table->foreign('dept_id')->references('id')->on('depts');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

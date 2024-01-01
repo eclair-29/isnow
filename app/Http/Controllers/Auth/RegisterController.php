@@ -71,6 +71,7 @@ class RegisterController extends Controller
             'status_id' => 1,
             'site_id' => 1,
             'division_id' => 1,
+            'dept_id' => 1,
         ]);
 
         $user->assignRole('requestor');
