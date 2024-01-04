@@ -44,16 +44,30 @@ table tbody td:last-child {
   border-right: 1px solid #dee2e6 !important;
 }
 
+.feather {
+  width: 18px;
+  height: 18px;
+}
+
+.delete-feedback {
+  /* background-color: rgba(227, 52, 47, 0.2) !important; */
+  border-color: rgb(227, 52, 47);
+}
+
+.list-group,
 table,
 #requestsdatatable,
+#approvalsdatatable,
 .paginate_button,
 .dataTables_info,
 #requestsdatatable_filter,
+#approvalsdatatable_filter,
 .dataTables_length {
   font-size: 12px !important;
 }
 
 #requestsdatatable_filter label,
+#approvalsdatatable_filter label,
 .dataTables_length label {
   margin-bottom: 10px !important;
 }
@@ -65,8 +79,4 @@ table,
 
 .required {
   color: red;
-}
-
-.sub-text {
-  font-size: 10px !important;
 }
