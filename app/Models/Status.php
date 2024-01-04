@@ -60,4 +60,9 @@ class Status extends Model
     {
         return $this->hasMany(AccountType::class);
     }
+
+    public function sapRoles()
+    {
+        return $this->hasMany(SapRole::class);
+    }
 }
