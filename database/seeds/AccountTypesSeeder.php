@@ -20,6 +20,13 @@ class AccountTypesSeeder extends Seeder
             ['description' => 'Enovia', 'status_id' => 18, 'current_charge' => 1200, 'created_at' => $date, 'updated_at' => $date, 'type' => 'global'],
             ['description' => 'Wifi', 'status_id' => 18, 'current_charge' => 0, 'created_at' => $date, 'updated_at' => $date, 'type' => 'local'],
             ['description' => 'VPN', 'status_id' => 18, 'current_charge' => 0, 'created_at' => $date, 'updated_at' => $date, 'type' => 'local'],
+
+            // salesforce subtypes
+            ['description' => 'Dev', 'status_id' => 18, 'current_charge' => 500, 'created_at' => $date, 'updated_at' => $date, 'type' => 'globa', 'is_subtype' => 1, 'parent_id' => 2],
+            ['description' => 'Other', 'status_id' => 18, 'current_charge' => 500, 'created_at' => $date, 'updated_at' => $date, 'type' => 'globa', 'is_subtype' => 1, 'parent_id' => 2],
+            ['description' => 'Dev EA', 'status_id' => 18, 'current_charge' => 1800, 'created_at' => $date, 'updated_at' => $date, 'type' => 'globa', 'is_subtype' => 1, 'parent_id' => 2],
+            ['description' => 'Sales EA', 'status_id' => 18, 'current_charge' => 1800, 'created_at' => $date, 'updated_at' => $date, 'type' => 'globa', 'is_subtype' => 1, 'parent_id' => 2],
+            ['description' => 'Others EA', 'status_id' => 18, 'current_charge' => 500, 'created_at' => $date, 'updated_at' => $date, 'type' => 'globa', 'is_subtype' => 1, 'parent_id' => 2],
         ];
 
         foreach ($accountTypes as $accountType) {
