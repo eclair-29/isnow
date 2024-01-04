@@ -19,10 +19,11 @@ class CreateRequestTrackingsTable extends Migration
             $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('approver_id');
+            $table->unsignedBigInteger('approver_id')->nullable();
             $table->foreign('approver_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

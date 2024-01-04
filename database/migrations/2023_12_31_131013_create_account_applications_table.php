@@ -22,6 +22,7 @@ class CreateAccountApplicationsTable extends Migration
             $table->unsignedBigInteger('account_type_id');
             $table->foreign('account_type_id')->references('id')->on('account_types')->onDelete('cascade');
             $table->timestamps();
+            $table->integer('charges');
         });
     }
 

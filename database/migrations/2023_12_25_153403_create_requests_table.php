@@ -19,7 +19,7 @@ class CreateRequestsTable extends Migration
             $table->string('purpose');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('approver_id');
+            $table->unsignedBigInteger('approver_id')->nullable();
             $table->foreign('approver_id')->references('id')->on('approvers');
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('statuses');
