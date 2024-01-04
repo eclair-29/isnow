@@ -41,6 +41,8 @@ Route::group(['middleware' => ['role:requestor|approver|admin']], function () {
 // Approver routes
 Route::group(['middleware' => ['role:approver']], function () {
     Route::get('/approvals', 'ApproverController@index')->name('approvals.index');
+    Route::put('/approvals/{id}', 'ApproverController@update')->name('approvals.update');
+    Route::get('/approvals/{id}', 'ApproverController@show')->name('approvals.show');
 });
 
 // SeusRoutes(admin routes)
