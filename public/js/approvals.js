@@ -8,7 +8,7 @@ function getApprovalsTable(baseUrl) {
         type: "get",
         url: `${baseUrl}/requests/getapprovalsdetails${
             currentPagePath === "/requests/create"
-                ? ""
+                ? "?accountid=" + $("#account_type").val()
                 : "?requestid=" + pageTicketPath
         }`,
         success: function (response) {
@@ -30,15 +30,19 @@ function getApprovalsTable(baseUrl) {
                 `);
 
                 tableBody.html(`
-                    <td>${response.user.name ?? "N/A"}</td>    
-                    <td>${response.deptHead.user.name ?? "N/A"}</td>    
+                    <td>${
+                        requestDetails
+                            ? requestDetails.user.name
+                            : response.user.name ?? "N/A"
+                    }</td>    
+                    <td>${response.deptHead?.user.name ?? "N/A"}</td>    
                     <td>${response.divisionHead?.user.name ?? "N/A"}</td>    
-                    <td>${response.isHead.user.name ?? "N/A"}</td>    
+                    <td>${response.isHead?.user.name ?? "N/A"}</td>    
                 `);
 
                 if (
-                    requestTypeVal === "4" ||
-                    response.requestDetails?.request_type_id === 4
+                    response.accountType?.type === "global"
+                    // || response.requestDetails?.request_type_id === 4
                 ) {
                     tableHeader.append(
                         '<th class="align-center" scope="col">Proceessed By</th>'
@@ -50,7 +54,7 @@ function getApprovalsTable(baseUrl) {
     });
 }
 
-$("#request_type").on("change", function () {
+$("#account_type").on("change", function () {
     getApprovalsTable(baseUrl);
 });
 

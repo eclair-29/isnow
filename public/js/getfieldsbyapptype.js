@@ -50,11 +50,20 @@ function showAppTypeFields() {
     }
 }
 
+function getRequestStatusValue() {
+    const applicationTypeVal = $("#application_type").val();
+    const status = $("#status_id");
+
+    if (applicationTypeVal === "1") status.val("32");
+    if (applicationTypeVal === "2") status.val("20");
+}
+
 $("#application_type").on("change", function () {
     const value = $(this).val();
     generateTicketId(baseUrl, value);
     getRequestTypes(baseUrl, value);
     showAppTypeFields();
+    getRequestStatusValue();
 });
 
 // on page load
