@@ -1,6 +1,6 @@
 <div class="form-group" hidden>
 	<input hidden name="user_id" id="user_id" class="form-control" value="{{ $user->id }}" />
-	<input hidden name="status_id" id="status_id" class="form-control" value="4" />
+	<input hidden name="status_id" id="status_id" class="form-control" />
 </div>
 <div class="form-row">
 	<div class="col-5 form-group">
