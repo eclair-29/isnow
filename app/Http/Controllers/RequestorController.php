@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTicketRequest;
+use App\Models\AccountApplication;
 use App\Models\AccountType;
 use App\Models\ApplicationType;
 use App\Models\Approver;
 use App\Models\Request as ModelsRequest;
 use App\Models\RequestTracking;
 use App\Models\RequestType;
+use App\Models\SapApplication;
+use App\Models\SapRole;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -60,18 +63,6 @@ class RequestorController extends Controller
         return $supervisors;
     }
 
-    public function getDivisionHead()
-    {
-        $divisionHead = Approver::with('user')
-            ->whereHas('user', function ($query) {
-                $query->where('division_id', auth()->user()->division_id);
-            })
-            ->where('approver_type_id', 2)
-            ->first();
-
-        return $divisionHead;
-    }
-
     public function getDpoHead() // get data privacy officer
     {
         $divisionHead = Approver::with('user')
@@ -84,38 +75,17 @@ class RequestorController extends Controller
         return $divisionHead;
     }
 
-    public function getIsHead()
-    {
-        $isHead = Approver::with('user')
-            ->whereHas('user', function ($query) {
-                $query->where('dept_id', 1);
-            })
-            ->where('approver_type_id', 1)
-            ->first();
-
-        return $isHead;
-    }
-
-    public function getDeptHead()
-    {
-        $deptHead = Approver::with('user')
-            ->whereHas('user', function ($query) {
-                $query->where('dept_id', auth()->user()->dept_id);
-            })
-            ->where('approver_type_id', 1)
-            ->first();
-
-        return $deptHead;
-    }
-
     public function getApprovalsDetails(Request $request)
     {
         $user = User::find(auth()->user()->id);
-        $deptHead = $this->getDeptHead();
-        $divisionHead = $this->getDivisionHead();
-        $isHead = $this->getIsHead();
-        $requestDetails = $request->requestid ? ModelsRequest::with('status', 'approver', 'requestType', 'applicationType')
+        $deptHead = getDeptHead();
+        $divisionHead = getDivisionHead();
+        $isHead = getIsHead();
+        $requestDetails = $request->requestid ? ModelsRequest::with('status', 'approver', 'requestType', 'applicationType', 'user')
             ->findOrFail($request->requestid) : null;
+
+        // situational due to conditional president approver on account request when selected account type is type 'global'
+        $accountType = $request->accountid ? AccountType::select('type')->where('id', $request->accountid)->first() : null;
 
         return [
             'user' => $user,
@@ -123,21 +93,8 @@ class RequestorController extends Controller
             'divisionHead' => $divisionHead,
             'isHead' => $isHead,
             'requestDetails' => $requestDetails,
+            'accountType' => $accountType
         ];
-    }
-
-    public function createRequestTracking($ticketId)
-    {
-        $ticketDetails = ModelsRequest::select('id', 'user_id', 'status_id', 'approver_id')
-            ->where('ticket_id', $ticketId)
-            ->first();
-
-        RequestTracking::create([
-            'request_id' => $ticketDetails->id,
-            'user_id' => $ticketDetails->user_id,
-            'approver_id' => $ticketDetails->approver_id,
-            'status_id' => $ticketDetails->status_id,
-        ]);
     }
 
     public function getAccountTypes()
@@ -167,11 +124,16 @@ class RequestorController extends Controller
     {
         $applicationTypes = $this->getApplicationTypes();
         $supervisors = $this->getSupervisors();
-        $divisionHead = $this->getDivisionHead();
-        $deptHead = $this->getDeptHead();
+        $divisionHead = getDivisionHead();
+        $deptHead = getDeptHead();
         $dpoHead = $this->getDpoHead();
         $user = User::find(auth()->user()->id);
         $accountTypes = $this->getAccountTypes();
+        $salesforceProfiles = AccountType::select('id', 'description', 'current_charge')
+            ->where('parent_id', 2)
+            ->where('is_subtype', 1)
+            ->get();
+        $sapRoles = SapRole::select('id', 'description')->get();
 
         return view('requestor.create', [
             'applicationTypes' => $applicationTypes,
@@ -181,6 +143,8 @@ class RequestorController extends Controller
             'deptHead' => $deptHead,
             'dpoHead' => $dpoHead,
             'accountTypes' => $accountTypes,
+            'sapRoles' => $sapRoles,
+            'salesforceProfiles' => $salesforceProfiles
         ]);
     }
 
@@ -201,7 +165,31 @@ class RequestorController extends Controller
         $validated['account_type_id'] = $request->input('account_type');
 
         ModelsRequest::create($validated);
-        $this->createRequestTracking($validated['ticket_id']);
+
+        # create account application record
+        if ($validated['application_type_id'] == '2') {
+            $charges = $validated['charges'] = str_replace('¥', '', $request->input('charges'));
+            $accountType = $validated['account_type_id'] = $request->input('account_type');
+            $requestId = ModelsRequest::select('id')->where('ticket_id', $validated['ticket_id'])->first();
+
+            AccountApplication::create([
+                'request_id' => $requestId->id,
+                'account_type_id' => $accountType,
+                'charges' => $charges,
+                'status_id' => $validated['status_id'],
+            ]);
+
+            $accountApplicationId = AccountApplication::select('id')->where('request_id', $requestId->id)->first();
+
+            if ($accountType == '3') {
+                SapApplication::create([
+                    'account_application_id' => $accountApplicationId->id,
+                    'sap_roles' => $request->sap_role,
+                ]);
+            }
+        }
+
+        createRequestTracking($validated['ticket_id'], $validated['status_id'], 'Request created');
 
         return redirect('/requests')->with('status', 'Request successfully created!');
     }
@@ -214,11 +202,24 @@ class RequestorController extends Controller
      */
     public function show($id)
     {
-        $request = ModelsRequest::findOrFail($id)
-            ->with('approver', 'requestType', 'status', 'user', 'applicationType')
+        $request = ModelsRequest::where('id', $id)
+            ->with('approver', 'requestType', 'status', 'user', 'applicationType', 'accountApplication')
             ->first();
         $requestTracking = RequestTracking::where('request_id', $id)->get();
-        return view('requestor.show', ['request' => $request, 'requestTracking' => $requestTracking]);
+
+        $accountApplication = $request->accountApplication->id;
+        $sapApplication = SapApplication::select('sap_roles')
+            ->where('account_application_id', $accountApplication)
+            ->first();
+        $sapRoles = SapRole::select('id', 'description')
+            ->whereIn('id', $sapApplication->sap_roles)
+            ->get();
+
+        return view('requestor.show', [
+            'request' => $request,
+            'requestTracking' => $requestTracking,
+            'sapRoles' => $sapRoles
+        ]);
     }
 
     /**
