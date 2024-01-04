@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Blade::component('reusables.approvers', 'approvers');
+        Blade::component('reusables.datatable', 'datatable');
+        Blade::component('reusables.request-details', 'requestdetails');
     }
 }
