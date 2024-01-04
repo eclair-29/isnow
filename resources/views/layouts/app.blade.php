@@ -18,6 +18,7 @@
     <script src="{{ asset('js/libs/jquery.js') }}"></script>
     <script src="{{ asset('js/libs/bootstrap.js') }}" defer></script>
     <script src="{{ asset('js/libs/datatables.js') }}"></script>
+    <script src="{{ asset('js/libs/feather-icons.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -103,5 +104,8 @@
         </main>
     </div>
 </body>
+<script>
+    feather.replace();
+</script>
 
 </html>
