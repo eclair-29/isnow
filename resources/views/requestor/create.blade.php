@@ -84,4 +84,6 @@
 </div>
 <script src="{{ asset('js/getfieldsbyapptype.js') }}"></script>
 <script src="{{ asset('js/approvals.js') }}"></script>
+<script src="{{ asset('js/setcharges.js') }}"></script>
+<script src="{{ asset('js/fieldrows.js') }}"></script>
 @endsection

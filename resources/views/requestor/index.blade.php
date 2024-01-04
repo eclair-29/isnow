@@ -19,32 +19,11 @@
 					</div>
 					@endif
 					<!-- List of created requests -->
-					<table class="table table-bordered" id="requestsdatatable">
-						<thead>
-							<tr>
-								<th scope="col">Ticket ID</th>
-								<th scope="col">Requestor</th>
-								<th scope="col">Approver</th>
-								<th scope="col">Application Type</th>
-								<th scope="col">Status</th>
-								<th scope="col">Updated Date</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($requests as $request)
-							<tr>
-								<td>
-									<a href="{{ route('requests.show', $request->id) }}">{{ $request->ticket_id }}</a>
-								</td>
-								<td>{{ $request->user->name }}</td>
-								<td>{{ $request->approver->user->name }}</td>
-								<td>{{ $request->applicationType->description }}</td>
-								<td>{{ $request->status->description }}</td>
-								<td>{{ $request->updated_at }}</td>
-							</tr>
-							@endforeach
-						</tbody>
-					</table>
+					@datatable
+					@slot('tableId', 'requestsdatatable')
+					@slot('data', $requests)
+					@slot('route', 'requests.show')
+					@enddatatable
 				</div>
 			</div>
 		</div>
