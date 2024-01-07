@@ -15,39 +15,39 @@ class StatusesSeeder extends Seeder
         $date = Carbon::now();
         $statuses = [
             // staff status
-            ['status_code' => 'staff_active', 'description' => 'active', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'staff_inactive', 'description' => 'inactive', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'staff_retired', 'description' => 'retired', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'staff_active', 'description' => 'Active', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'staff_inactive', 'description' => 'Inactive', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'staff_retired', 'description' => 'Retired', 'category_id' => 1, 'created_at' => $date, 'updated_at' => $date],
 
             // request status
-            ['status_code' => 'request_pending', 'description' => 'pending', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'request_approved', 'description' => 'approved', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'request_rejected', 'description' => 'rejected', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'request_expired', 'description' => 'expired', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_processing', 'description' => 'For Processing', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_approved', 'description' => 'Approved', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_rejected', 'description' => 'Rejected by IS Officer', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_expired', 'description' => 'Expired', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
 
             // site status
-            ['status_code' => 'site_active', 'description' => 'active', 'category_id' => 3, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'site_inactive', 'description' => 'inactive', 'category_id' => 3, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'site_active', 'description' => 'Active', 'category_id' => 3, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'site_inactive', 'description' => 'Inactive', 'category_id' => 3, 'created_at' => $date, 'updated_at' => $date],
 
             // division status
-            ['status_code' => 'division_active', 'description' => 'active', 'category_id' => 4, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'division_inactive', 'description' => 'inactive', 'category_id' => 4, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'division_active', 'description' => 'Active', 'category_id' => 4, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'division_inactive', 'description' => 'Inactive', 'category_id' => 4, 'created_at' => $date, 'updated_at' => $date],
 
             // application type status
-            ['status_code' => 'application_type_active', 'description' => 'active', 'category_id' => 5, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'application_type_inactive', 'description' => 'inactive', 'category_id' => 5, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'application_type_active', 'description' => 'Active', 'category_id' => 5, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'application_type_inactive', 'description' => 'Inactive', 'category_id' => 5, 'created_at' => $date, 'updated_at' => $date],
 
             // request type status  
-            ['status_code' => 'request_type_active', 'description' => 'active', 'category_id' => 6, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'request_type_inactive', 'description' => 'inactive', 'category_id' => 6, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_type_active', 'description' => 'Active', 'category_id' => 6, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'request_type_inactive', 'description' => 'Inactive', 'category_id' => 6, 'created_at' => $date, 'updated_at' => $date],
 
             // dept. status
-            ['status_code' => 'dept_active', 'description' => 'active', 'category_id' => 7, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'dept_inactive', 'description' => 'inactive', 'category_id' => 7, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'dept_active', 'description' => 'Active', 'category_id' => 7, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'dept_inactive', 'description' => 'Inactive', 'category_id' => 7, 'created_at' => $date, 'updated_at' => $date],
 
             // account type status
-            ['status_code' => 'account_type_active', 'description' => 'active', 'category_id' => 8, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'account_type_inactive', 'description' => 'inactive', 'category_id' => 8, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'account_type_active', 'description' => 'Active', 'category_id' => 8, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'account_type_inactive', 'description' => 'Inactive', 'category_id' => 8, 'created_at' => $date, 'updated_at' => $date],
 
             // account request status - dept. head
             ['status_code' => 'account_request_depthead_pending', 'description' => 'Pending Dept. Head Approval', 'category_id' => 9, 'created_at' => $date, 'updated_at' => $date],
@@ -85,11 +85,18 @@ class StatusesSeeder extends Seeder
             ['status_code' => 'hris_request_dpo_rejected', 'description' => 'Rejected by Data Privacy Officer', 'category_id' => 9, 'created_at' => $date, 'updated_at' => $date],
 
             // final approved status
-            ['status_code' => 'final_approved', 'description' => 'Approved', 'category_id' => 9, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'final_approved', 'description' => 'Approved', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
 
             // sap role status
-            ['status_code' => 'sap_role_active', 'description' => 'active', 'category_id' => 10, 'created_at' => $date, 'updated_at' => $date],
-            ['status_code' => 'sap_role_inactive', 'description' => 'inactive', 'category_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'sap_role_active', 'description' => 'Active', 'category_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'sap_role_inactive', 'description' => 'Inactive', 'category_id' => 10, 'created_at' => $date, 'updated_at' => $date],
+
+            // closed status
+            ['status_code' => 'closed', 'description' => 'Closed', 'category_id' => 2, 'created_at' => $date, 'updated_at' => $date],
+
+            // sap role user status
+            ['status_code' => 'sap_role_user_active', 'description' => 'Active', 'category_id' => 11, 'created_at' => $date, 'updated_at' => $date],
+            ['status_code' => 'sap_role_user_inactive', 'description' => 'Inactive', 'category_id' => 11, 'created_at' => $date, 'updated_at' => $date],
         ];
 
         foreach ($statuses as $status) {

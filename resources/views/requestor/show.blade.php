@@ -7,6 +7,7 @@
 			<div class="card">
 				@requestdetails
 				@slot('data', $request)
+				@slot('salesforceProfiles', $salesforceProfiles)
 				@slot('sapRoles', $sapRoles)
 				@endrequestdetails
 			</div> <!-- END: card-body -->

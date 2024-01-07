@@ -26,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::component('reusables.datatable', 'datatable');
         Blade::component('reusables.request-details', 'requestdetails');
+        Blade::component('reusables.subtype-select', 'subtypeselect');
+        Blade::component('reusables.details.subtype', 'subtypedetails');
     }
 }

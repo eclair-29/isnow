@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesforceApplication extends Model
 {
+    protected $fillable = [
+        'account_application_id',
+        'salesforce_profiles'
+    ];
+
     protected $casts = [
         'salesforce_profiles' => 'array'
     ];

@@ -12,21 +12,31 @@ function getApprovalsTable(baseUrl) {
                 : "?requestid=" + pageTicketPath
         }`,
         success: function (response) {
-            const requestTypeVal = $("#request_type").val();
+            // const requestTypeVal = $("#request_type").val();
             const applicationTypeVal = $("#application_type").val();
             const tableHeader = $("#approverstable thead tr");
             const tableBody = $("#approverstable tbody tr");
-            const requestDetails = response.requestDetails;
 
+            const requestDetails = response.requestDetails;
+            const isAccountTypeGlobal =
+                response.accountType?.type === "global" ||
+                response.accountType === "global";
+
+            // approvers for request: account application
             if (
                 applicationTypeVal === "2" ||
                 requestDetails?.application_type_id === 2
             ) {
                 tableHeader.html(`
-                    <th class="align-center" scope="col">Requested By</th>
-                    <th class="align-center" scope="col">Checked By</th>
-                    <th class="align-center" scope="col">Noted By</th>
-                    <th class="align-center" scope="col">MIS Approved By</th>
+                    <th class="align-center" scope="col">Requestor</th>
+                    <th class="align-center" scope="col">Dept. Head</th>
+                    <th class="align-center" scope="col">Division Head</th>
+                    <th class="align-center" scope="col">MIS Head</th>
+                    ${
+                        isAccountTypeGlobal &&
+                        '<th class="align-center" scope="col">President</th>'
+                    } 
+                    <th class="align-center" scope="col">Processed By</th>
                 `);
 
                 tableBody.html(`
@@ -37,18 +47,23 @@ function getApprovalsTable(baseUrl) {
                     }</td>    
                     <td>${response.deptHead?.user.name ?? "N/A"}</td>    
                     <td>${response.divisionHead?.user.name ?? "N/A"}</td>    
-                    <td>${response.isHead?.user.name ?? "N/A"}</td>    
+                    <td>${response.isHead?.user.name ?? "N/A"}</td>   
+                    ${
+                        isAccountTypeGlobal &&
+                        `<td>${response.president?.user.name ?? "N/A"}</td>`
+                    } 
+                    <td>IS Officer</td>
                 `);
 
-                if (
-                    response.accountType?.type === "global"
-                    // || response.requestDetails?.request_type_id === 4
-                ) {
-                    tableHeader.append(
-                        '<th class="align-center" scope="col">Proceessed By</th>'
-                    );
-                    tableBody.append(`<td>N/A</td>`);
-                }
+                // if (
+                //     response.accountType?.type === "global"
+                //     // || response.requestDetails?.request_type_id === 4
+                // ) {
+                //     tableHeader.append(
+                //         '<th class="align-center" scope="col">Proceessed By</th>'
+                //     );
+                //     tableBody.append(`<td>N/A</td>`);
+                // }
             }
         },
     });

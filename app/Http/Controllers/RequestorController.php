@@ -10,10 +10,14 @@ use App\Models\Approver;
 use App\Models\Request as ModelsRequest;
 use App\Models\RequestTracking;
 use App\Models\RequestType;
+use App\Models\SalesforceApplication;
 use App\Models\SapApplication;
 use App\Models\SapRole;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RequestorController extends Controller
 {
@@ -77,23 +81,28 @@ class RequestorController extends Controller
 
     public function getApprovalsDetails(Request $request)
     {
-        $user = User::find(auth()->user()->id);
-        $deptHead = getDeptHead();
-        $divisionHead = getDivisionHead();
-        $isHead = getIsHead();
-        $requestDetails = $request->requestid ? ModelsRequest::with('status', 'approver', 'requestType', 'applicationType', 'user')
+        $authuser = User::find(auth()->user()->id);
+        $requestDetails = $request->requestid ? ModelsRequest::with('status', 'approver', 'requestType', 'applicationType', 'user', 'accountApplication')
             ->findOrFail($request->requestid) : null;
+        $requestorId = $requestDetails->user ?? $authuser;
+        $deptHead = getDeptHead($requestorId);
+        $divisionHead = getDivisionHead($requestorId);
+        $isHead = getIsHead($requestorId);
+        $president = getPresident($requestorId);
 
         // situational due to conditional president approver on account request when selected account type is type 'global'
-        $accountType = $request->accountid ? AccountType::select('type')->where('id', $request->accountid)->first() : null;
+        $accountType = $request->requestid
+            ? $requestDetails->accountApplication->accountType->type
+            : AccountType::select('type')->where('id', $request->accountid)->first();
 
         return [
-            'user' => $user,
+            'user' => $authuser,
             'deptHead' => $deptHead,
             'divisionHead' => $divisionHead,
             'isHead' => $isHead,
             'requestDetails' => $requestDetails,
-            'accountType' => $accountType
+            'president' => $president,
+            'accountType' => $accountType,
         ];
     }
 
@@ -122,18 +131,22 @@ class RequestorController extends Controller
      */
     public function create()
     {
+        $user = User::find(auth()->user()->id);
         $applicationTypes = $this->getApplicationTypes();
         $supervisors = $this->getSupervisors();
-        $divisionHead = getDivisionHead();
-        $deptHead = getDeptHead();
+        $divisionHead = getDivisionHead($user);
+        $deptHead = getDeptHead($user);
         $dpoHead = $this->getDpoHead();
-        $user = User::find(auth()->user()->id);
         $accountTypes = $this->getAccountTypes();
         $salesforceProfiles = AccountType::select('id', 'description', 'current_charge')
             ->where('parent_id', 2)
             ->where('is_subtype', 1)
             ->get();
         $sapRoles = SapRole::select('id', 'description')->get();
+        $existingSapRoles = User::find(1)->sapRoles;
+        $existingSalesforceProfiles = $user->accountTypes->where('parent_id', 2);
+
+        dd($existingSapRoles);
 
         return view('requestor.create', [
             'applicationTypes' => $applicationTypes,
@@ -144,7 +157,9 @@ class RequestorController extends Controller
             'dpoHead' => $dpoHead,
             'accountTypes' => $accountTypes,
             'sapRoles' => $sapRoles,
-            'salesforceProfiles' => $salesforceProfiles
+            'salesforceProfiles' => $salesforceProfiles,
+            'existingSapRoles' => $existingSapRoles,
+            'existingSalesforceProfiles' => $existingSalesforceProfiles,
         ]);
     }
 
@@ -156,40 +171,55 @@ class RequestorController extends Controller
      */
     public function store(StoreTicketRequest $request)
     {
-        $validated = $request->validated();
+        DB::beginTransaction();
+        try {
+            $validated = $request->validated();
 
-        # re-assigning: database attribute/col <-> request input name
-        $validated['approver_id'] = $request->input('approver');
-        $validated['application_type_id'] = $request->input('application_type');
-        $validated['request_type_id'] = $request->input('request_type');
-        $validated['account_type_id'] = $request->input('account_type');
+            # re-assigning: database attribute/col <-> request input name
+            $validated['approver_id'] = $request->input('approver');
+            $validated['application_type_id'] = $request->input('application_type');
+            $validated['request_type_id'] = $request->input('request_type');
+            $validated['account_type_id'] = $request->input('account_type');
 
-        ModelsRequest::create($validated);
+            ModelsRequest::create($validated);
 
-        # create account application record
-        if ($validated['application_type_id'] == '2') {
-            $charges = $validated['charges'] = str_replace('¥', '', $request->input('charges'));
-            $accountType = $validated['account_type_id'] = $request->input('account_type');
-            $requestId = ModelsRequest::select('id')->where('ticket_id', $validated['ticket_id'])->first();
+            # create account application record
+            if ($validated['application_type_id'] == '2') {
+                $charges = $validated['charges'] = str_replace('¥', '', $request->input('charges'));
+                $accountType = $validated['account_type_id'] = $request->input('account_type');
+                $requestId = ModelsRequest::select('id')->where('ticket_id', $validated['ticket_id'])->first();
 
-            AccountApplication::create([
-                'request_id' => $requestId->id,
-                'account_type_id' => $accountType,
-                'charges' => $charges,
-                'status_id' => $validated['status_id'],
-            ]);
-
-            $accountApplicationId = AccountApplication::select('id')->where('request_id', $requestId->id)->first();
-
-            if ($accountType == '3') {
-                SapApplication::create([
-                    'account_application_id' => $accountApplicationId->id,
-                    'sap_roles' => $request->sap_role,
+                AccountApplication::create([
+                    'request_id' => $requestId->id,
+                    'account_type_id' => $accountType,
+                    'charges' => $charges,
+                    'status_id' => $validated['status_id'],
                 ]);
-            }
-        }
 
-        createRequestTracking($validated['ticket_id'], $validated['status_id'], 'Request created');
+                $accountApplicationId = AccountApplication::select('id')->where('request_id', $requestId->id)->first();
+
+                if ($accountType == '3') {
+                    SapApplication::create([
+                        'account_application_id' => $accountApplicationId->id,
+                        'sap_roles' => $request->sap_role,
+                    ]);
+                }
+
+                if ($accountType == '2') {
+                    SalesforceApplication::create([
+                        'account_application_id' => $accountApplicationId->id,
+                        'salesforce_profiles' => $request->salesforce_subtype,
+                    ]);
+                }
+            }
+
+            createRequestTracking($validated['ticket_id'], $validated['status_id'], 'Request created');
+
+            DB::commit();
+        } catch (Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
 
         return redirect('/requests')->with('status', 'Request successfully created!');
     }
@@ -208,17 +238,34 @@ class RequestorController extends Controller
         $requestTracking = RequestTracking::where('request_id', $id)->get();
 
         $accountApplication = $request->accountApplication->id;
+
+        # sap application
         $sapApplication = SapApplication::select('sap_roles')
             ->where('account_application_id', $accountApplication)
             ->first();
-        $sapRoles = SapRole::select('id', 'description')
+        $sapRoles = $request->accountApplication->accountType->id == 3
+            ? SapRole::select('id', 'description')
             ->whereIn('id', $sapApplication->sap_roles)
-            ->get();
+            ->get()
+            : [];
+
+        # salesforce application
+        $salesforceApplication = SalesforceApplication::select('salesforce_profiles')
+            ->where('account_application_id', $accountApplication)
+            ->first();
+        $salesforceProfiles = $request->accountApplication->accountType->id == 2
+            ? AccountType::select('id', 'description', 'current_charge')
+            ->where('parent_id', 2)
+            ->where('is_subtype', 1)
+            ->whereIn('id', $salesforceApplication->salesforce_profiles)
+            ->get()
+            : [];
 
         return view('requestor.show', [
             'request' => $request,
             'requestTracking' => $requestTracking,
-            'sapRoles' => $sapRoles
+            'sapRoles' => $sapRoles,
+            'salesforceProfiles' => $salesforceProfiles,
         ]);
     }
 

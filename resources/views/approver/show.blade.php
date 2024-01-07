@@ -7,6 +7,8 @@
             <div class="card">
                 @requestdetails
                 @slot('data', $request)
+                @slot('salesforceProfiles', $salesforceProfiles)
+                @slot('sapRoles', $sapRoles)
                 @endrequestdetails
 
                 <form action="{{ route('approvals.update', $request->id) }}" method="post">

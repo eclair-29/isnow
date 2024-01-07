@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ApproverTypesSeeder::class,
             DeptsSeeder::class,
             AccountTypesSeeder::class,
+            SapRolesSeeder::class,
         ]);
     }
 }

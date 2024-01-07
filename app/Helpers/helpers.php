@@ -19,11 +19,11 @@ function createRequestTracking($ticketId, $status, $notes)
     ]);
 }
 
-function getDivisionHead()
+function getDivisionHead($requestor)
 {
     $divisionHead = Approver::with('user')
-        ->whereHas('user', function ($query) {
-            $query->where('division_id', auth()->user()->division_id);
+        ->whereHas('user', function ($query) use ($requestor) {
+            $query->where('division_id', $requestor->division_id);
         })
         ->where('approver_type_id', 2)
         ->first();
@@ -31,11 +31,11 @@ function getDivisionHead()
     return $divisionHead;
 }
 
-function getDeptHead()
+function getDeptHead($requestor)
 {
     $deptHead = Approver::with('user')
-        ->whereHas('user', function ($query) {
-            $query->where('dept_id', auth()->user()->dept_id);
+        ->whereHas('user', function ($query) use ($requestor) {
+            $query->where('dept_id', $requestor->dept_id);
         })
         ->where('approver_type_id', 1)
         ->first();
@@ -53,4 +53,13 @@ function getIsHead()
         ->first();
 
     return $isHead;
+}
+
+function getPresident()
+{
+    $president = Approver::with('user')
+        ->where('approver_type_id', 4)
+        ->first();
+
+    return $president;
 }

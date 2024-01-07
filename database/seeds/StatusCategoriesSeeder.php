@@ -24,7 +24,8 @@ class StatusCategoriesSeeder extends Seeder
             ['category_code' => 'account_type_status', 'description' => 'account type status', 'created_at' => $date, 'updated_at' => $date],
             ['category_code' => 'account_request_status', 'description' => 'account request status', 'created_at' => $date, 'updated_at' => $date],
             ['category_code' => 'hris_request_status', 'description' => 'hris request status', 'created_at' => $date, 'updated_at' => $date],
-            ['category_code' => 'sap_role_status', 'description' => 'sap role status', 'created_at' => $date, 'updated_at' => $date]
+            ['category_code' => 'sap_role_status', 'description' => 'sap role status', 'created_at' => $date, 'updated_at' => $date],
+            ['category_code' => 'sap_role_user_status', 'description' => 'sap role user status', 'created_at' => $date, 'updated_at' => $date]
         ];
 
         foreach ($categories as $category) {

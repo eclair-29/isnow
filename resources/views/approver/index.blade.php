@@ -16,7 +16,7 @@
 					<!-- List of request for approvals -->
 					@datatable
 					@slot('tableId', 'approvalsdatatable')
-					@slot('data', $approvals)
+					@slot('data', $approver->approver_type_id == 5 ? $approvalsForProcessing : $approvals)
 					@slot('route', 'approvals.show')
 					@enddatatable
 				</div>

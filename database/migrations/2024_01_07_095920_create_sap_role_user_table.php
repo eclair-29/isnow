@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSapApplicationRoleTable extends Migration
+class CreateSapRoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateSapApplicationRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('sap_application_role', function (Blueprint $table) {
+        Schema::create('sap_role_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('sap_application_id');
-            $table->foreign('sap_application_id')->references('id')->on('sap_applications');
             $table->unsignedBigInteger('sap_role_id');
-            $table->foreign('sap_role_id')->references('id')->on('sap_roles');
+            $table->foreign('sap_role_id')->references('id')->on('sap_roles')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateSapApplicationRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sap_application_role');
+        Schema::dropIfExists('sap_role_user');
     }
 }

@@ -18,6 +18,8 @@ class ApproverTypesSeeder extends Seeder
             ['type' => 'depthead', 'description' => 'Dept. Head', 'created_at' => $date, 'updated_at' => $date],
             ['type' => 'divhead', 'description' => 'Division Head', 'created_at' => $date, 'updated_at' => $date],
             ['type' => 'supervisor', 'description' => 'Supervisor', 'created_at' => $date, 'updated_at' => $date],
+            ['type' => 'president', 'description' => 'President', 'created_at' => $date, 'updated_at' => $date],
+            ['type' => 'processor', 'description' => 'Processor', 'created_at' => $date, 'updated_at' => $date],
             // ['type' => 'dpo', 'description' => 'Data Privacy Officer', 'created_at' => $date, 'updated_at' => $date],
         ];
 

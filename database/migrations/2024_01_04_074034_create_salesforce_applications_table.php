@@ -17,9 +17,8 @@ class CreateSalesforceApplicationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('account_application_id');
             $table->foreign('account_application_id')->references('id')->on('account_applications')->onDelete('cascade');
-            $table->json('salesforce_profies');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->json('salesforce_profiles');
+            $table->json('profiles_for_delete')->nullable();
             $table->timestamps();
         });
     }

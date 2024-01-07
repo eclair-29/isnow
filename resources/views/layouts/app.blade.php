@@ -104,8 +104,5 @@
         </main>
     </div>
 </body>
-<script>
-    feather.replace();
-</script>
 
 </html>

@@ -16,7 +16,7 @@
                 <a href="{{ route($route, $request->id) }}">{{ $request->ticket_id }}</a>
             </td>
             <td>{{ $request->user->name }}</td>
-            <td>{{ $request->approver->user->name ?? 'N/A' }}</td>
+            <td>{{ $request->approver->user->name ?? 'IS Officer' }}</td>
             <td>{{ $request->applicationType->description }}</td>
             <td>{{ $request->status->description }}</td>
             <td>{{ $request->updated_at }}</td>

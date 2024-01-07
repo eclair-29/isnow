@@ -44,9 +44,26 @@ table tbody td:last-child {
   border-right: 1px solid #dee2e6 !important;
 }
 
+.subtype-table thead tr th, 
+.subtype-table tbody tr td {
+  padding: 8px 10px;
+}
+
 .feather {
   width: 18px;
   height: 18px;
+}
+
+.dropdown-toggle:after { 
+  content: none;
+}
+
+.subtype-action-btn {
+  border-color: #ced4da;
+}
+
+.existing-subtype-field {
+  background-color: white !important;
 }
 
 .delete-feedback {

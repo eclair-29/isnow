@@ -17,8 +17,9 @@ class CreateSapApplicationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('account_application_id');
             $table->foreign('account_application_id')->references('id')->on('account_applications');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->json('sap_roles');
+            $table->json('roles_for_delete')->nullable();
             $table->timestamps();
         });
     }

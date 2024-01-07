@@ -10,11 +10,16 @@
 </div>
 <div class="row py-4">
     <div class="col">
-        <span class="text-uppercase text-secondary">SAP Roles</span>
-        <ul class="list-group pt-2">
-            @foreach ($sapRoles as $sapRole)
-            <li class="list-group-item">{{ $sapRole->description }}</li>
-            @endforeach
-        </ul>
+        @subtypedetails
+        @if ($data->accountApplication->accountType->id == 2)
+        @slot('label', 'Salesforce Profile')
+        @slot('data', $salesforceProfiles)
+        @endif
+
+        @if ($data->accountApplication->accountType->id == 3)
+        @slot('label', 'SAP Roles')
+        @slot('data', $sapRoles)
+        @endif
+        @endsubtypedetails
     </div>
 </div>

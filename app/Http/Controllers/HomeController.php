@@ -30,7 +30,7 @@ class HomeController extends Controller
 
         $approver = Approver::create([
             'user_id' => auth()->user()->id,
-            'approver_type_id' => 1,
+            'approver_type_id' => 5,
 
         ]);
 

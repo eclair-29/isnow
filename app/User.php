@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Models\AccountType;
 use App\Models\Dept;
 use App\Models\Division;
 use App\Models\Request;
 use App\Models\SalesforceApplication;
 use App\Models\SapApplication;
+use App\Models\SapRole;
 use App\Models\Site;
 use App\Models\Status;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -88,5 +90,17 @@ class User extends Authenticatable
     public function sapApplications()
     {
         return $this->hasMany(SapApplication::class);
+    }
+
+    public function sapRoles()
+    {
+        return $this->belongsToMany(SapRole::class, 'sap_role_user')
+            ->wherePivot('status');
+    }
+
+    public function accountTypes()
+    {
+        return $this->belongsToMany(AccountType::class, 'account_type_user')
+            ->withPivot('status');
     }
 }

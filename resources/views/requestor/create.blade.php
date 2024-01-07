@@ -22,7 +22,7 @@
 						<!-- Application Type dropdown -->
 						<div class="form-group">
 							<label for="application_type">Application Type<span class="required">*</span></label>
-							<select name="application_type" id="application_type" class="form-control">
+							<select name="application_type" id="application_type" class="form-control custom-select">
 								<option selected disabled>Select Application Type</option>
 								@foreach ($applicationTypes as $applicationType)
 								<option value="{{ $applicationType->id }}" {{
@@ -49,7 +49,8 @@
 							<!-- Request Type dropdown -->
 							<div class="col form-group">
 								<label for="request_type">Request Type<span class="required">*</span></label>
-								<select name="request_type" id="request_type" class="form-control"></select>
+								<select name="request_type" id="request_type"
+									class="form-control custom-select"></select>
 								<small id="reqtypeselectinfo" class="form-text text-muted">request types will depend on
 									selected application type</small>
 								@error('request_type')
@@ -82,8 +83,11 @@
 		</div>
 	</div>
 </div>
-<script src="{{ asset('js/getfieldsbyapptype.js') }}"></script>
+<script src="{{ asset('js/apptypefields.js') }}"></script>
 <script src="{{ asset('js/approvals.js') }}"></script>
 <script src="{{ asset('js/setcharges.js') }}"></script>
-<script src="{{ asset('js/fieldrows.js') }}"></script>
+<script src="{{ asset('js/accounttypefields.js') }}"></script>
+<script>
+	feather.replace();
+</script>
 @endsection

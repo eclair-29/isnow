@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RequestTracking extends Model
 {
     protected $fillable = [
-        'request_id', 'user_id', 'approver_id', 'status_id',
+        'request_id', 'user_id', 'approver_id', 'status_id', 'notes'
     ];
 
     public function request()
