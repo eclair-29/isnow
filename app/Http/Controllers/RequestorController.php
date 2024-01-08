@@ -143,10 +143,8 @@ class RequestorController extends Controller
             ->where('is_subtype', 1)
             ->get();
         $sapRoles = SapRole::select('id', 'description')->get();
-        $existingSapRoles = User::find(1)->sapRoles;
+        $existingSapRoles = $user->sapRoles;
         $existingSalesforceProfiles = $user->accountTypes->where('parent_id', 2);
-
-        dd($existingSapRoles);
 
         return view('requestor.create', [
             'applicationTypes' => $applicationTypes,
@@ -188,6 +186,9 @@ class RequestorController extends Controller
                 $charges = $validated['charges'] = str_replace('¥', '', $request->input('charges'));
                 $accountType = $validated['account_type_id'] = $request->input('account_type');
                 $requestId = ModelsRequest::select('id')->where('ticket_id', $validated['ticket_id'])->first();
+                $subtypeForDel = collect($request->subtype_for_del)->unique();
+
+                // dd($subtypeForDel);
 
                 AccountApplication::create([
                     'request_id' => $requestId->id,
@@ -202,6 +203,7 @@ class RequestorController extends Controller
                     SapApplication::create([
                         'account_application_id' => $accountApplicationId->id,
                         'sap_roles' => $request->sap_role,
+                        'roles_for_delete' => $subtypeForDel,
                     ]);
                 }
 
@@ -209,6 +211,7 @@ class RequestorController extends Controller
                     SalesforceApplication::create([
                         'account_application_id' => $accountApplicationId->id,
                         'salesforce_profiles' => $request->salesforce_subtype,
+                        'profiles_for_delete' => $subtypeForDel,
                     ]);
                 }
             }
