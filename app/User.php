@@ -95,7 +95,7 @@ class User extends Authenticatable
     public function sapRoles()
     {
         return $this->belongsToMany(SapRole::class, 'sap_role_user')
-            ->wherePivot('status');
+            ->withPivot('status');
     }
 
     public function accountTypes()
