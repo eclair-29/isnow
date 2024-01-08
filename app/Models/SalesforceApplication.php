@@ -8,7 +8,8 @@ class SalesforceApplication extends Model
 {
     protected $fillable = [
         'account_application_id',
-        'salesforce_profiles'
+        'salesforce_profiles',
+        'profiles_for_delete',
     ];
 
     protected $casts = [

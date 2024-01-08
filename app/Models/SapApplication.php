@@ -8,7 +8,8 @@ class SapApplication extends Model
 {
     protected $fillable = [
         'account_application_id',
-        'sap_roles'
+        'sap_roles',
+        'roles_for_delete',
     ];
 
     protected $casts = [
