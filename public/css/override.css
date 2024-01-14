@@ -2,6 +2,7 @@
   border-radius: 0 !important;
 }
 
+button,
 input,
 select,
 textarea {
@@ -58,8 +59,15 @@ table tbody td:last-child {
   content: none;
 }
 
+.existing-subtype-action-btn,
 .subtype-action-btn {
   border-color: #ced4da;
+  color: #6c757d;
+}
+
+.existing-subtype-action-btn:hover {
+  color: #e3342f;
+  background-color: white;
 }
 
 .existing-subtype-field {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTicketRequest;
+use App\Mail\TicketRequestMail;
 use App\Models\AccountApplication;
 use App\Models\AccountType;
 use App\Models\ApplicationType;
@@ -17,6 +18,7 @@ use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class RequestorController extends Controller
@@ -188,7 +190,7 @@ class RequestorController extends Controller
                 $requestId = ModelsRequest::select('id')->where('ticket_id', $validated['ticket_id'])->first();
                 $subtypeForDel = collect($request->subtype_for_del)->unique();
 
-                // dd($subtypeForDel);
+                // dd($request->input('subtype_for_del'));
 
                 AccountApplication::create([
                     'request_id' => $requestId->id,
@@ -217,6 +219,14 @@ class RequestorController extends Controller
             }
 
             createRequestTracking($validated['ticket_id'], $validated['status_id'], 'Request created');
+
+            $requestMailData = [
+                'subject' => '[TICKET APPROVAL] ' . $validated['ticket_id'],
+                'body' => 'Request ticket #: ' . $validated['ticket_id'] . ' for approval.',
+                'ticketId' => $validated['ticket_id'],
+            ];
+
+            Mail::to(['dmgzky@gmail.com'])->send(new TicketRequestMail($requestMailData));
 
             DB::commit();
         } catch (Throwable $th) {

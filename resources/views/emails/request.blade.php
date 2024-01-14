@@ -1,12 +1,29 @@
-@component('mail::message')
-# Ticket Request has been created
+<!DOCTYPE html>
+<html lang="en">
 
-The body of your message.
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Ticket No. {{ $data['ticketId'] }} For Approval
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ $data['body'] }}</p>
+                        <a href="#" class="btn btn-outline-success">See Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
-Thanks,<br>
-{{ config('app.name') }}
-@endcomponent
+</html>
